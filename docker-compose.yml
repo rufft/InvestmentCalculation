@@ -1,0 +1,6 @@
+﻿services:
+  investmentcalculation:
+    image: investmentcalculation
+    build:
+      context: .
+      dockerfile: InvestmentCalculation/Dockerfile
