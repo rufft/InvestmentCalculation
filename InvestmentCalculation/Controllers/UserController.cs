@@ -59,6 +59,11 @@ public class UserController : ControllerBase
         {
             await _roleManager.CreateAsync(new IdentityRole("user"));
         }
+        
+        if (!await _roleManager.RoleExistsAsync("admin"))
+        {
+            await _roleManager.CreateAsync(new IdentityRole("admin"));
+        }
 
         ProjectUser user = userRegister;
         // add economy branch to user 

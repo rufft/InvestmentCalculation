@@ -14,7 +14,6 @@ public class UserRegister
     public string? UserThirdName { get; init; }
     
     [Required]
-    [EmailAddress]
     public string Email { get; init; }
     
     [Required]
