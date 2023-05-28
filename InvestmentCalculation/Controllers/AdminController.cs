@@ -28,6 +28,11 @@ public class AdminController : ControllerBase
         _calculationService = calculationService;
     }
     
+    /// <summary>
+    /// Добавить роль администратора пользователю
+    /// </summary>
+    /// <param name="email"></param>
+    /// <returns></returns>
     [HttpPost]
     [Route("/improve")]
     public async Task<ActionResult> ImproveToAdmin([FromForm] string email)

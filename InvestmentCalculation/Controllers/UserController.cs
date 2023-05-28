@@ -1,4 +1,5 @@
-﻿using InvestmentCalculation.Data.Entities;
+﻿using InvestmentCalculation.Data;
+using InvestmentCalculation.Data.Entities;
 using InvestmentCalculation.Model.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -12,14 +13,16 @@ public class UserController : ControllerBase
     private readonly SignInManager<ProjectUser> _signInManager;
     private readonly UserManager<ProjectUser> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly DataBaseContext _context;
     public UserController(
         SignInManager<ProjectUser> signInManager,
         UserManager<ProjectUser> userManager,
-        RoleManager<IdentityRole> roleManager)
+        RoleManager<IdentityRole> roleManager, DataBaseContext context)
     {
         _signInManager = signInManager;
         _userManager = userManager;
         _roleManager = roleManager;
+        _context = context;
     }
     
     [HttpPost]
@@ -58,6 +61,13 @@ public class UserController : ControllerBase
         }
 
         ProjectUser user = userRegister;
+        // add economy branch to user 
+        var branch = _context.EconomyBranches.FirstOrDefault(x => x.Id == userRegister.UserEconomyBranchId);
+
+        if (branch == null) return BadRequest();
+
+        user.UserEconomyBranch = branch;
+        
         var result = await _userManager.CreateAsync(user, userRegister.Password);
         
         if (!result.Succeeded) return BadRequest();

@@ -14,8 +14,7 @@ public class ProjectUser : IdentityUser
         string inn,
         string? countryName,
         string? cityName,
-        string? positionInOrganization,
-        string userEconomyBranchName) : base(userName)
+        string? positionInOrganization) : base(userName)
     {
         UserFirstName = userFirstName;
         UserLastName = userLastName;
@@ -25,7 +24,6 @@ public class ProjectUser : IdentityUser
         CountryName = countryName;
         CityName = cityName;
         PositionInOrganization = positionInOrganization;
-        UserEconomyBranchName = userEconomyBranchName;
     }
 
     [Column("user_first_name")]
@@ -53,7 +51,7 @@ public class ProjectUser : IdentityUser
     public string? PositionInOrganization { get; set; }
 
     [Column("branch_of_the_economy")]
-    public string UserEconomyBranchName { get; set; }
+    public EconomyBranch UserEconomyBranch { get; set; }
 
     [Column("investment_calculations")]
     public List<Calculation> Calculations { get; set; } = new();

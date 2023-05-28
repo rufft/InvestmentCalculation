@@ -32,7 +32,7 @@ public class UserRegister
     public string? PositionInOrganization { get; init; }
 
     [Required]
-    public string UserEconomyBranchName { get; init; }
+    public string UserEconomyBranchId { get; init; }
 
     private ProjectUser _toProjectUser(UserRegister userRegister)
     {
@@ -44,8 +44,7 @@ public class UserRegister
             userRegister.INN,
             userRegister.CountryName,
             userRegister.CityName,
-            userRegister.PositionInOrganization,
-            userRegister.UserEconomyBranchName);
+            userRegister.PositionInOrganization);
         user.Email = Email;
         return user;
     }

@@ -119,7 +119,7 @@ public class CalculationService
     {
         var calculation = new Calculation(investmentCalculateRequest);
 
-        float workersCost = investmentCalculateRequest.CountOfWorkers * investmentCalculateRequest.EconomyBranch.MeanSalary;
+        float workersCost = investmentCalculateRequest.CountOfWorkers * investmentCalculateRequest.EconomyBranch.MeanSalary * 1000;
         calculation.TotalInvest += workersCost;
         calculation.WorkersCost = workersCost;
 
@@ -168,7 +168,8 @@ public class CalculationService
     {
         float taxes;
         var patentBusinesses = investmentCalculateRequest.PatentBusinesses;
-        taxes = patentBusinesses.MeanPossibleProfit * 1000 + investmentCalculateRequest.EconomyBranch.MeanMoscowTax + investmentCalculateRequest.EconomyBranch.MeanAnotherTaxes;
+        // TODO: Умножить в базе 
+        taxes = patentBusinesses.MeanPossibleProfit * 1000 + investmentCalculateRequest.EconomyBranch.MeanMoscowTax * 1000 + investmentCalculateRequest.EconomyBranch.MeanAnotherTaxes;
         return taxes;
     }
     
@@ -230,7 +231,8 @@ private float GTS_taxes(EconomyBranch branch)
             + branch.MeanProfitTax
             + branch.MeanPropertyTax
             + branch.MeanAreaRentTax
-            + branch.MeanPersonalIncomeTax
+            // TODO: умножить в базе 
+            + branch.MeanPersonalIncomeTax * 1000
             + branch.MeanTransportTax
             + branch.MeanAnotherTaxes;
 }
@@ -238,7 +240,8 @@ private float GTS_taxes(EconomyBranch branch)
 private float SP_STS_taxes(EconomyBranch branch)
 {
     return branch.MeanMoscowTax
-            + branch.MeanPersonalIncomeTax
+            // TODO: умножить в базе
+            + branch.MeanPersonalIncomeTax * 1000
             + branch.MeanTransportTax
             + branch.MeanAnotherTaxes;
 }

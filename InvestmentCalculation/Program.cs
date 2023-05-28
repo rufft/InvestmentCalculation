@@ -4,6 +4,7 @@ using InvestmentCalculation.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -25,6 +26,19 @@ services.AddIdentity<ProjectUser, IdentityRole>()
     .AddDefaultTokenProviders();
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
+services.ConfigureSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Investment Calculation API",
+        Version = "v1",
+        Description = "API for Investment Calculation",
+        Contact = new OpenApiContact
+        {
+            Name = "Investment Calculation"
+        }
+    });
+});
 
 services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
@@ -56,11 +70,8 @@ services.Configure<IdentityOptions>(options =>
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseStatusCodePages();
 app.UseHttpsRedirection();
