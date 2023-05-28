@@ -28,8 +28,11 @@ public class CalculationController : ControllerBase
     {
         if (!ModelState.IsValid) return BadRequest();
         
-        var result = _calculationService.Calculate(investmentRequest);
-        return Ok();
+        var user = _userManager.GetUserAsync(User).Result;
+        
+        var result = _calculationService.Calculate(investmentRequest, user);
+        result.ProjectUser = null;
+        return Ok(result);
     }
     
     [HttpGet]
@@ -41,7 +44,7 @@ public class CalculationController : ControllerBase
         
         if (user == null) return BadRequest();
 
-        var result = _calculationService.GetCalculations(user.Id);
+        var result = await _calculationService.GetCalculations(user.Id);
         return Ok(result);
     }
     

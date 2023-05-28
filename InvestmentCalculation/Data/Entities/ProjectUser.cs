@@ -54,9 +54,9 @@ public class ProjectUser : IdentityUser
 
     [Column("branch_of_the_economy")]
     public string UserEconomyBranchName { get; set; }
-    
+
     [Column("investment_calculations")]
-    public IQueryable<Calculation> Calculations { get; set; }
+    public List<Calculation> Calculations { get; set; } = new();
 
     private ProjectUser() { }
 }

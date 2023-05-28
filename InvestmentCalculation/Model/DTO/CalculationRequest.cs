@@ -10,7 +10,7 @@ public class CalculationRequest
     
     public string EconomyBranchId { get; set; }
     
-    public string PatentBusinessesId { get; set; }
+    public string? PatentBusinessesId { get; set; }
 
     //[Required]
     public Dictionary<string, int> MachineRequestInfosDict { get; set; }

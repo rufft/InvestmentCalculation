@@ -15,7 +15,9 @@ public class MoscowDistrict : IIdentifier
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public string Id { get; init; }
 
-    [Column("district_name")] public string DistrictName { get; }
+    [Column("district_name")] 
+    public string DistrictName { get; set; }
+    
 
     [Column("mean_price_per_square_meter")]
     public float MeanPricePerSquareMeter { get; set; }

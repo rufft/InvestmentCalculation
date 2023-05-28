@@ -19,4 +19,13 @@ public class DataBaseContext : IdentityDbContext<ProjectUser>
     public DbSet<Machine> Machines { get; set; }
     public DbSet<JurisprudenceCompanyForm> JurisprudenceCompanyForms { get; set; }
     public DbSet<PatentBusinesses> PatentBusinesses { get; set; }
+    
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+        builder.Entity<Calculation>()
+            .HasMany(u => u.MachineRequestInfos)
+            .WithOne(u => u.Calculation)
+            .OnDelete(DeleteBehavior.Cascade);
+        }
 }

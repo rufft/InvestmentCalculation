@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using InvestmentCalculation.Data.Entities;
 
 namespace InvestmentCalculation.Model;
 
@@ -19,6 +20,9 @@ public class MachineRequestInfo : IIdentifier
     
     [Column("machine_count")]
     public int MachineCount { get; set; }
+    
+    [Column("calculation")]
+    public Calculation Calculation { get; set; }
     
     private MachineRequestInfo() {}
 }

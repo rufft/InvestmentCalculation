@@ -25,7 +25,7 @@ public class CalculationService
         var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
         if (user == null) return null;
 
-        return await user.Calculations.ToListAsync();
+        return user.Calculations;
     }
     
     public async Task<List<Calculation>?> GetCalculations()
@@ -38,7 +38,7 @@ public class CalculationService
         var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
         if (user == null) return null;
 
-        return await user.Calculations.FirstOrDefaultAsync(c => c.Id == calculationId);
+        return user.Calculations.FirstOrDefault(c => c.Id == calculationId);
     }
     
     public async Task<Calculation?> GetCalculation(string calculationId)
@@ -51,7 +51,7 @@ public class CalculationService
         var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
         if (user == null) return false;
 
-        var calculation = await user.Calculations.FirstOrDefaultAsync(c => c.Id == calculationId);
+        var calculation = user.Calculations.FirstOrDefault(c => c.Id == calculationId);
         if (calculation == null) return false;
 
         _context.Calculations.Remove(calculation);
@@ -79,16 +79,16 @@ public class CalculationService
         return true;
     }
 
-    public IInvestmenResponse Calculate(CalculationRequest investmentRequest)
+    public Calculation Calculate(CalculationRequest investmentRequest, ProjectUser currentUser)
     {
         
-        IInvestmenResponse investmentResponse;
+        Calculation calculation;
         
         var request = _dtoToCalculateRequest(investmentRequest);
 
-        investmentResponse = CalculateStartInvestFormula(request);
+        calculation = CalculateStartInvestFormula(request, currentUser);
 
-        return investmentResponse;
+        return calculation;
     }
     
     private IInvestmentRequest _dtoToCalculateRequest (CalculationRequest investmentRequest)
@@ -106,13 +106,16 @@ public class CalculationService
             calculation.MachineRequestInfos.Add(new MachineRequestInfo(machine, machineRequestInfo.Value));
         }
         calculation.JurisprudenceCompanyForm = _context.JurisprudenceCompanyForms.FirstOrDefault(f => f.JurisprudenceCompanyFormType == investmentRequest.JurisprudenceCompanyFormType) ?? throw new InvalidOperationException();
-        calculation.PatentBusinesses = _context.PatentBusinesses.FirstOrDefault(p => p.Id == investmentRequest.PatentBusinessesId) ?? throw new InvalidOperationException();
+        if (investmentRequest.PatentBusinessesId != null)
+        {
+            calculation.PatentBusinesses = _context.PatentBusinesses.FirstOrDefault(p => p.Id == investmentRequest.PatentBusinessesId) ?? throw new InvalidOperationException();
+        }
         calculation.TaxType = investmentRequest.TaxType;
 
         return calculation;
     }
 
-    private IInvestmenResponse CalculateStartInvestFormula(IInvestmentRequest investmentCalculateRequest)
+    private Calculation CalculateStartInvestFormula(IInvestmentRequest investmentCalculateRequest, ProjectUser currentUser)
     {
         var calculation = new Calculation(investmentCalculateRequest);
 
@@ -154,7 +157,10 @@ public class CalculationService
         calculation.TotalInvest += businessAccountingCost;
         calculation.BusinessAccountingCost = businessAccountingCost;
 
-        _context.Calculations.Add(calculation);
+        var entri = _context.Calculations.Add(calculation);
+        currentUser.Calculations.Add(calculation);
+        
+        _context.SaveChanges();
         return calculation;
     }
     
@@ -162,7 +168,7 @@ public class CalculationService
     {
         float taxes;
         var patentBusinesses = investmentCalculateRequest.PatentBusinesses;
-        taxes = patentBusinesses.MeanPossibleProfit + patentBusinesses.MeanMoscowTax + patentBusinesses.MeanAnotherTaxes;
+        taxes = patentBusinesses.MeanPossibleProfit * 1000 + investmentCalculateRequest.EconomyBranch.MeanMoscowTax + investmentCalculateRequest.EconomyBranch.MeanAnotherTaxes;
         return taxes;
     }
     

@@ -202,6 +202,11 @@ namespace InvestmentCalculation.Migrations
                         .HasColumnType("text")
                         .HasColumnName("id");
 
+                    b.Property<string>("DistrictName")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("district_name");
+
                     b.Property<float>("MeanPricePerSquareMeter")
                         .HasColumnType("real")
                         .HasColumnName("mean_price_per_square_meter");
@@ -218,17 +223,14 @@ namespace InvestmentCalculation.Migrations
                         .HasColumnType("text")
                         .HasColumnName("id");
 
-                    b.Property<float>("MeanAnotherTaxes")
-                        .HasColumnType("real")
-                        .HasColumnName("mean_another_taxes");
-
-                    b.Property<float>("MeanMoscowTax")
-                        .HasColumnType("real")
-                        .HasColumnName("mean_moscow_tax");
-
                     b.Property<float>("MeanPossibleProfit")
                         .HasColumnType("real")
                         .HasColumnName("mean_possible_profit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("name");
 
                     b.HasKey("Id");
 
@@ -368,6 +370,7 @@ namespace InvestmentCalculation.Migrations
                         .HasColumnName("id");
 
                     b.Property<string>("CalculationId")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("MachineCount")
@@ -553,13 +556,17 @@ namespace InvestmentCalculation.Migrations
 
             modelBuilder.Entity("InvestmentCalculation.Model.MachineRequestInfo", b =>
                 {
-                    b.HasOne("InvestmentCalculation.Data.Entities.Calculation", null)
+                    b.HasOne("InvestmentCalculation.Data.Entities.Calculation", "Calculation")
                         .WithMany("MachineRequestInfos")
-                        .HasForeignKey("CalculationId");
+                        .HasForeignKey("CalculationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("InvestmentCalculation.Model.Machine", "Machine")
                         .WithMany()
                         .HasForeignKey("MachineId");
+
+                    b.Navigation("Calculation");
 
                     b.Navigation("Machine");
                 });

@@ -15,6 +15,7 @@ public class Calculation : IInvestmentRequest, IInvestmenResponse, IIdentifier
         JurisprudenceCompanyForm = investmentRequest.JurisprudenceCompanyForm;
         TaxType = investmentRequest.TaxType;
         PatentBusinesses = investmentRequest.PatentBusinesses;
+        EconomyBranch = investmentRequest.EconomyBranch;
     }
 
     public Calculation()
