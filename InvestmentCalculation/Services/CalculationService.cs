@@ -169,7 +169,7 @@ public class CalculationService
         float taxes;
         var patentBusinesses = investmentCalculateRequest.PatentBusinesses;
         // TODO: Умножить в базе 
-        taxes = patentBusinesses.MeanPossibleProfit * 1000 + investmentCalculateRequest.EconomyBranch.MeanMoscowTax * 1000 + investmentCalculateRequest.EconomyBranch.MeanAnotherTaxes;
+        taxes = patentBusinesses.MeanPossibleProfit * 1000 * 0.06f + investmentCalculateRequest.EconomyBranch.MeanMoscowTax * 1000 + investmentCalculateRequest.EconomyBranch.MeanAnotherTaxes;
         return taxes;
     }
     

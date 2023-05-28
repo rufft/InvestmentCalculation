@@ -1,4 +1,5 @@
 ﻿using InvestmentCalculation.Data;
+using InvestmentCalculation.Data.Entities;
 using InvestmentCalculation.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
